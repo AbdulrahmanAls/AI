@@ -1,0 +1,17 @@
+0 COC  
+1 COD  
+2 COAV 
+3 COP  
+4 H  
+5 COM  
+6 QU  
+7 COAL  
+8 COB  
+9 COS  
+10 COSAIS  
+11 COE  
+12 COAM  
+13 COAP  
+14 SEU  
+15 COED           
+16 SH  
