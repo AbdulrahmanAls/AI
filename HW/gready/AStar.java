@@ -9,7 +9,7 @@ public class AStar
     int [] funcGCost; // The cost so far to reach a city
     int [] funcFCost; // The estimated total cost through a city to the goal
     boolean [] calc; // To determine whether the path cost to a city has been calculated or not
-    List<Integer> list; // list represents the nodes which have to be expanded
+    List<Integer> list; // list represents the nodes which have to  be expanded
 
     public static void main(String[] args) {
         new AStar();
