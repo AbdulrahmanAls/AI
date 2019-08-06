@@ -41,7 +41,7 @@ public class TRA {
     }
 
     void TRA() {
-        System.out.println("The current location is: " + retCity(currPos) + "\n");
+        System.out.println("The current location is: " + retbuilding(currPos) + "\n");
         System.out.println("Moving to the next destination: \n..[0] "
                 + "manually\n..[1] First In First Out (FIFO)\n..[2] Last In First Out (LIFO)]\n.."
                 + " [3] DFS \n [4] BFS\n [5] DLS \n[-1] Stop");
@@ -62,7 +62,7 @@ public class TRA {
 
             System.out.println("\nChoose one of the following connected building: ");
             for (int i = 0; i < list.size(); i++)
-                System.out.println("[" + i + "]" + retCity(list.get(i)) + "\t");
+                System.out.println("[" + i + "]" + retbuilding(list.get(i)) + "\t");
             System.out.println("\nInput: ");
             ch = inp.nextInt();
 
@@ -80,12 +80,12 @@ public class TRA {
             for (int i = 0; i < N; i++)
                 if (G[currPos][i] == true) {
                     Q.offer(i);// The connected cities are added to the queue
-                    addToQ += retCity(i) + "\t";
+                    addToQ += retbuilding(i) + "\t";
                 }
             addToQ += "]\n";
 
             System.out.println(addToQ);
-            System.out.println(retCity(Q.peek()) + " is the destination\n");
+            System.out.println(retbuilding(Q.peek()) + " is the destination\n");
             currPos = Q.peek();
             TRA();
             break;
@@ -97,7 +97,7 @@ public class TRA {
             for (int i = 0; i < N; i++)
                 if (G[currPos][i] == true) {
                     sta.push(i);// The connected cities are added to the statck
-                    addToSta += retCity(i) + "\t";
+                    addToSta += retbuilding(i) + "\t";
                 }
             addToSta += "top=>]";
             System.out.println(addToSta);
@@ -114,7 +114,7 @@ public class TRA {
 
             while (!stack.empty()) {
                 currPos = stack.pop();
-                System.out.println("Current location is " + retCity(currPos));
+                System.out.println("Current location is " + retbuilding(currPos));
 
                 if (currPos == goal) {
                     System.out.println("You have reached your goal building!!!\n");
@@ -127,7 +127,7 @@ public class TRA {
                 System.out.println("Connected building are:\n");
                 for (int i = 0; i < N; i++)
                     if (G[currPos][i] == true && !visited.contains(i)){
-                        System.out.println(retCity(i));
+                        System.out.println(retbuilding(i));
                         stack.push(i);
                     }
 
@@ -143,7 +143,7 @@ public class TRA {
 
             while (!queue.isEmpty()) {
                 currPos = queue.remove();
-                System.out.println("Current location is " + retCity(currPos));
+                System.out.println("Current location is " + retbuilding(currPos));
 
                 if (currPos == qgoal) {
                     System.out.println("You have reached your goal building!!!\n");
@@ -154,7 +154,7 @@ public class TRA {
                 for (int i = 0; i < N; i++) {
                     
                     if (G[currPos][i] == true && !qvisited.contains(i)) {
-                        System.out.println(retCity(i));
+                        System.out.println(retbuilding(i));
                         queue.add(i);
                         qvisited.add(i);
                     }
@@ -186,7 +186,7 @@ public class TRA {
         while (!stack.empty()) {
             currPos = stack.pop();
             depth++;
-            System.out.println("Current location is " + retCity(currPos));
+            System.out.println("Current location is " + retbuilding(currPos));
             System.out.println("Current depth is " + get_level(currPos));
 
             if (currPos == goal) {
@@ -200,7 +200,7 @@ public class TRA {
             System.out.println("Connected building are:\n");
             for (int i = 0; i < N; i++) {
                 if (G[currPos][i] == true && !visited.contains(i)){
-                    System.out.println(retCity(i));
+                    System.out.println(retbuilding(i));
                     stack.push(i);
                     visited.add(i);
 
@@ -224,7 +224,7 @@ public class TRA {
             
             if (G[i][current_pos] == true) {
 
-                // System.out.println(retCity(i) + "->" + retCity(current_pos));
+                // System.out.println(retbuilding(i) + "->" + retbuilding(current_pos));
 
                 current_pos = i;
                 i = -1;
@@ -237,28 +237,28 @@ public class TRA {
     }
 
     public static void main(String[] args) {
-        int cityChoice;
+        int buildingChoice;
         Scanner inp = new Scanner(System.in);
         System.out.println("\n\nChoose a building number to start with: \n");
         for (int i = 0; i < 17; i++)// shows the list of cities
-            System.out.println(retCity(i) + " building[" + i + "]");
+            System.out.println(retbuilding(i) + " building[" + i + "]");
         System.out.print("\nInput: ");
-        cityChoice = inp.nextInt();// User's choice of the list
+        buildingChoice = inp.nextInt();// User's choice of the list
 
-        if (cityChoice < 0 || cityChoice >= 17)// the user choice is not included in the list
+        if (buildingChoice < 0 || buildingChoice >= 17)// the user choice is not included in the list
         {
             System.out.println("Mistake,run the program again");
             System.exit(0);
         }
 
-        TRA traGraph = new TRA(17, cityChoice);
+        TRA traGraph = new TRA(17, buildingChoice);
         traGraph.TRA();
     }
 
-    // the function returns city name, according to its index in V
+    // the function returns building name, according to its index in V
     // array
 
-    public static String retCity(int i) {
+    public static String retbuilding(int i) {
         if (i == 0)
             return "COC";
         else if (i == 1)
@@ -300,7 +300,7 @@ public class TRA {
         Scanner inpGoal = new Scanner(System.in);
         System.out.println("\n\nChoose a building number to reacg: \n");
         for (int i = 0; i < 17; i++)// shows the list of cities
-            System.out.println(retCity(i) + " building[" + i + "]");
+            System.out.println(retbuilding(i) + " building[" + i + "]");
         System.out.print("\nInput: ");
         int goal = inpGoal.nextInt();// User's choice of the list
 

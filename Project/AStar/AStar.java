@@ -8,10 +8,10 @@ public class AStar {
     int[] estCost_to_SH; // estimated cost to the goal
     int[] estCost_to_COE; // estimated cost to the goal
     int[] estCost_to_COP; // estimated cost to the goal
-    int[][] toCityCost; // The cost among cities
-    int[] funcGCost; // The cost so far to reach a city
-    int[] funcFCost; // The estimated total cost through a city to the goal
-    boolean[] calc; // To determine whether the path cost to a city has been calculated or not
+    int[][] tobuildingCost; // The cost among cities
+    int[] funcGCost; // The cost so far to reach a building
+    int[] funcFCost; // The estimated total cost through a building to the goal
+    boolean[] calc; // To determine whether the path cost to a building has been calculated or not
     List<Integer> list; // list represents the nodes which have to be expanded
     int goal;
     int start;
@@ -37,7 +37,7 @@ public class AStar {
         Scanner inp = new Scanner(System.in);
         System.out.println("\n\nChoose a building number to start with: \n");
         for (int i = 0; i < 17; i++)// shows the list of cities
-            System.out.println(retCity(i) + " building[" + i + "]");
+            System.out.println(retbuilding(i) + " building[" + i + "]");
         System.out.print("\nInput: ");
         start = inp.nextInt();// User's choice of the list
 
@@ -50,7 +50,7 @@ public class AStar {
 
         System.out.println("\n\nChoose a building number to end with: \n");
         for (int i = 0; i < 17; i++)// shows the list of cities
-            System.out.println(retCity(i) + " building[" + i + "]");
+            System.out.println(retbuilding(i) + " building[" + i + "]");
         System.out.print("\nInput: ");
         goal = inp.nextInt();// User's choice of the list
 
@@ -63,10 +63,10 @@ public class AStar {
 
         setupEstCost();
         
-        toCityCost = new int[N][N]; // cost among cities
+        tobuildingCost = new int[N][N]; // cost among cities
         btwCities();
-        funcGCost = new int[N]; // The cost so far to reach a city
-        funcFCost = new int[N]; // The estimated total cost through a city to the goal
+        funcGCost = new int[N]; // The cost so far to reach a building
+        funcFCost = new int[N]; // The estimated total cost through a building to the goal
         calc = new boolean[N];
         list = new ArrayList<Integer>();
 
@@ -78,7 +78,7 @@ public class AStar {
         list.add(start);
 
         // perform A* search algorithm on the graph
-        AStar(start); // Arad city is considered to be the start location
+        AStar(start); // Arad building is considered to be the start location
 
         System.out.println();
         System.out.println();
@@ -92,7 +92,7 @@ public class AStar {
     }
 
     public void AStar(int Loc) {
-        System.out.println("The current location: " + retCity(Loc));
+        System.out.println("The current location: " + retbuilding(Loc));
         System.out.println("H(" + hFunc(Loc) + ")\n");
 
         if (Loc == goal) { // Bucharest location = 2
@@ -112,7 +112,7 @@ public class AStar {
 
         System.out.println("---------------Expansion--------------");
         for (int i : list) {
-            System.out.println("|" + retCity(i) + "= H(" + hFunc(i) + ")|");
+            System.out.println("|" + retbuilding(i) + "= H(" + hFunc(i) + ")|");
         }
         System.out.println("----------------------------------------\n\n");
 
@@ -260,48 +260,48 @@ public class AStar {
     }
 
     public int btwCost(int first, int second) {
-        return toCityCost[first][second];
+        return tobuildingCost[first][second];
     }
 
     public void assignGCost(int from, int to) {
         funcGCost[to] = retGCost(from) + btwCost(from, to);
     }
 
-    public int retGCost(int city) {
-        return funcGCost[city];
+    public int retGCost(int building) {
+        return funcGCost[building];
     }
 
-    public void assignFCost(int city) {
-        funcFCost[city] = hFunc(city);
+    public void assignFCost(int building) {
+        funcFCost[building] = hFunc(building);
     }
 
-    public int retFCost(int city) {
-        return funcFCost[city];
+    public int retFCost(int building) {
+        return funcFCost[building];
     }
 
     void btwCities() {
-        toCityCost[0][1] = toCityCost[1][0] = distance(D[0][0],D[0][1],D[1][0],D[1][1],"K"); // notice that for each edge toCityCost[i][j] == toCityCost[j][i]
-        toCityCost[0][2] = toCityCost[2][0] = distance(D[0][0],D[0][1],D[2][0],D[2][1],"K"); // this means that the graph is undirected
-        toCityCost[0][3] = toCityCost[3][0] = distance(D[0][0],D[0][1],D[3][0],D[3][1],"K");
-        toCityCost[0][4] = toCityCost[4][0] = distance(D[0][0],D[0][1],D[4][0],D[4][1],"K");
-        toCityCost[1][2] = toCityCost[2][1] = distance(D[1][0],D[1][1],D[2][0],D[2][1],"K");
-        toCityCost[1][7] = toCityCost[7][1] = distance(D[1][0],D[1][1],D[7][0],D[7][1],"K");
-        toCityCost[2][3] = toCityCost[3][2] = distance(D[2][0],D[2][1],D[3][0],D[3][1],"K");
-        toCityCost[2][5] = toCityCost[5][2] = distance(D[2][0],D[2][1],D[5][0],D[5][1],"K");
-        toCityCost[3][8] = toCityCost[8][3] = distance(D[3][0],D[3][1],D[8][0],D[8][1],"K");
-        toCityCost[5][6] = toCityCost[6][5] = distance(D[5][0],D[5][1],D[6][0],D[6][1],"K");
-        toCityCost[7][10] = toCityCost[10][7] = distance(D[7][0],D[7][1],D[10][0],D[10][1],"K");
-        toCityCost[8][9] = toCityCost[9][8] = distance(D[8][0],D[8][1],D[9][0],D[9][1],"K");
-        toCityCost[9][12] = toCityCost[12][9] = distance(D[12][0],D[12][1],D[9][0],D[9][1],"K");
-        toCityCost[10][16] = toCityCost[16][10] = distance(D[10][0],D[10][1],D[16][0],D[16][1],"K");
-        toCityCost[10][14] = toCityCost[14][10] = distance(D[10][0],D[10][1],D[14][0],D[14][1],"K");
-        toCityCost[10][11] = toCityCost[11][10] = distance(D[10][0],D[10][1],D[11][0],D[11][1],"K");
-        toCityCost[11][12] = toCityCost[12][11] = distance(D[12][0],D[12][1],D[11][0],D[11][1],"K");
-        toCityCost[11][13] = toCityCost[13][11] = distance(D[13][0],D[10][1],D[13][0],D[11][1],"K");
-        toCityCost[14][15] = toCityCost[15][14] = distance(D[14][0],D[14][1],D[15][0],D[15][1],"K");
+        tobuildingCost[0][1] = tobuildingCost[1][0] = distance(D[0][0],D[0][1],D[1][0],D[1][1],"K"); // notice that for each edge tobuildingCost[i][j] == tobuildingCost[j][i]
+        tobuildingCost[0][2] = tobuildingCost[2][0] = distance(D[0][0],D[0][1],D[2][0],D[2][1],"K"); // this means that the graph is undirected
+        tobuildingCost[0][3] = tobuildingCost[3][0] = distance(D[0][0],D[0][1],D[3][0],D[3][1],"K");
+        tobuildingCost[0][4] = tobuildingCost[4][0] = distance(D[0][0],D[0][1],D[4][0],D[4][1],"K");
+        tobuildingCost[1][2] = tobuildingCost[2][1] = distance(D[1][0],D[1][1],D[2][0],D[2][1],"K");
+        tobuildingCost[1][7] = tobuildingCost[7][1] = distance(D[1][0],D[1][1],D[7][0],D[7][1],"K");
+        tobuildingCost[2][3] = tobuildingCost[3][2] = distance(D[2][0],D[2][1],D[3][0],D[3][1],"K");
+        tobuildingCost[2][5] = tobuildingCost[5][2] = distance(D[2][0],D[2][1],D[5][0],D[5][1],"K");
+        tobuildingCost[3][8] = tobuildingCost[8][3] = distance(D[3][0],D[3][1],D[8][0],D[8][1],"K");
+        tobuildingCost[5][6] = tobuildingCost[6][5] = distance(D[5][0],D[5][1],D[6][0],D[6][1],"K");
+        tobuildingCost[7][10] = tobuildingCost[10][7] = distance(D[7][0],D[7][1],D[10][0],D[10][1],"K");
+        tobuildingCost[8][9] = tobuildingCost[9][8] = distance(D[8][0],D[8][1],D[9][0],D[9][1],"K");
+        tobuildingCost[9][12] = tobuildingCost[12][9] = distance(D[12][0],D[12][1],D[9][0],D[9][1],"K");
+        tobuildingCost[10][16] = tobuildingCost[16][10] = distance(D[10][0],D[10][1],D[16][0],D[16][1],"K");
+        tobuildingCost[10][14] = tobuildingCost[14][10] = distance(D[10][0],D[10][1],D[14][0],D[14][1],"K");
+        tobuildingCost[10][11] = tobuildingCost[11][10] = distance(D[10][0],D[10][1],D[11][0],D[11][1],"K");
+        tobuildingCost[11][12] = tobuildingCost[12][11] = distance(D[12][0],D[12][1],D[11][0],D[11][1],"K");
+        tobuildingCost[11][13] = tobuildingCost[13][11] = distance(D[13][0],D[10][1],D[13][0],D[11][1],"K");
+        tobuildingCost[14][15] = tobuildingCost[15][14] = distance(D[14][0],D[14][1],D[15][0],D[15][1],"K");
     }
     // perform a AStar search on the aforementioned graph
-    String retCity(int i) { // the function returns city name, according to its index in V array
+    String retbuilding(int i) { // the function returns building name, according to its index in V array
         if (i == 0)
             return "COC";
         else if (i == 1)
